@@ -1,29 +1,46 @@
-function Write-Progess {
+function Invoke-writeProgess {
+<#
+.SYNOPSIS
+    Displays a rotating progress message.
+
+.DESCRIPTION
+    This function displays a rotating progress message on the console. The rotation is achieved by cycling through an array of symbols.
+
+.PARAMETER Message
+    The message to display next to the rotating symbol.
+
+.PARAMETER RotatingSymbol
+    An array of symbols to cycle through for the rotation. If no array is provided, the default symbols are '|', '/', '-', and '\'.
+
+.PARAMETER LoopCount
+    The number of times to cycle through the rotating symbols. If no value is provided, the default is 1.
+
+.EXAMPLE
+    Write-Progess -Message "Processing..." -RotatingSymbol @('🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘') -LoopCount 5
+
+    This command will display a rotating progress message that cycles through the phases of the moon emoji five times.
+#>
+
     [CmdletBinding()]
     param (
-        $Message
+        [string]$Message,
+        [string[]]$RotatingSymbol = @("|","/","-","\"),
+        [int]$LoopCount = 1
     )
     
     begin {
-        $RotatingSymbol = @("|","/","-","\")
-        $Emptystring +=" " * [Console]::WindowWidth
+        $Emptystring = " " * [Console]::WindowWidth
     }
     
     process {
-        #will make your progressline fancy
-        if($Script:LastIndexSymbol -eq $null){
-            $Script:LastIndexSymbol = 0
+        for($j = 0; $j -lt $LoopCount; $j++) {
+            #will make your progressline fancy
+            for($i = 0; $i -lt $RotatingSymbol.Count; $i++) {
+                Write-Host "`r$Emptystring" -NoNewline
+                Write-Host "`r[$($Rotatingsymbol[$i])$Message]" -NoNewline
+                Start-Sleep -Milliseconds 100
+            }
         }
-        
-        Write-Host "`r$emptystring" -NoNewline
-        Write-Host "`r[$($Rotatingsymbol[$($Script:LastIndexSymbol)])]$Message" -NoNewline
-        $Script:LastIndexSymbol+=1
-        if($Script:LastIndexSymbol -eq $RotatingSymbol.Count){
-            $Script:LastIndexSymbol = 0
-        }
-    }
-    
-    end {
-        
     }
 }
+
