@@ -6,7 +6,7 @@ function Write-Progess {
     
     begin {
         $RotatingSymbol = @("|","/","-","\")
-        $Emptystring +=" " * [Console]::WindowWidth
+        $Emptystring =" " * [Console]::WindowWidth
     }
     
     process {
